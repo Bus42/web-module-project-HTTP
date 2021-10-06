@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { BASE_URL } from '../data';
 
 import axios from 'axios';
 
 const EditMovieForm = (props) => {
 	const { push } = useHistory();
-
+	const { id } = useParams();
 	const [movie, setMovie] = useState({
 		title:"",
 		director: "",
@@ -14,6 +15,16 @@ const EditMovieForm = (props) => {
 		metascore: 0,
 		description: ""
 	});
+
+	useEffect(() => {
+		axios.get(`${BASE_URL}/movies/${id}`)
+		.then(({data}) => {
+			setMovie(data);
+		})
+		.catch(({error}) => {
+			console.error(error)
+		})
+	}, [])
 	
 	const handleChange = (e) => {
         setMovie({
