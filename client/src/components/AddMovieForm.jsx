@@ -5,9 +5,8 @@ import { BASE_URL } from '../data';
 
 import axios from 'axios';
 
-const EditMovieForm = (props) => {
+const AddMovieForm = (props) => {
 	const { push } = useHistory();
-	const { id } = useParams();
 	const [movie, setMovie] = useState({
 		title:"",
 		director: "",
@@ -15,16 +14,6 @@ const EditMovieForm = (props) => {
 		metascore: 0,
 		description: ""
 	});
-
-	useEffect(() => {
-		axios.get(`${BASE_URL}/movies/${id}`)
-		.then(({data}) => {
-			setMovie(data);
-		})
-		.catch(({error}) => {
-			console.error(error)
-		})
-	}, [])
 	
 	const handleChange = (e) => {
         setMovie({
@@ -35,10 +24,10 @@ const EditMovieForm = (props) => {
 
     const handleSubmit = (e) => {
 		e.preventDefault();
-		axios.put(`${BASE_URL}/movies/${id}`, movie)
+		axios.post(`${BASE_URL}/movies`, {...movie})
 		.then(({data}) => {
 			props.setMovies(data)
-			push(`/movies/${id}`)
+			push("/movies")
 		})
 		.catch(({error}) => {
 			console.error(error)
@@ -86,4 +75,4 @@ const EditMovieForm = (props) => {
 	</div>);
 }
 
-export default EditMovieForm;
+export default AddMovieForm;
